@@ -1,0 +1,125 @@
+select ename,sal from emp where sal>all(select sal from emp where  job='CLERK')order by sal desc;
+
+2
+select ename,deptno,sal from emp where sal=Any(select sal from emp where comm is not null)and deptno=Any(select deptno from emp where comm is not null) and empno not in(select 	empno from emp where comm is not null)
+
+3
+select ename,sal from emp where sal=(select min(sal) from emp where sal>(select min(sal) from emp where sal>(select min(sal) from emp)))#3rdlowestsal
+
+4
+select ename,hiredate from emp where deptno=(select deptno from emp where 	ename='SMITH') and ename<>'SMITH' #smdptasmith
+
+5
+select ename from emp where sal=(select min(sal) from emp where empno=any (select distinct mgr from emp));#lowestmngr
+
+6
+select * from emp where hiredate<(select hiredate from emp where ename='KING')#jnaftrking
+
+7
+select deptno from emp group by deptno having count(*)=( select max(count(*)) from emp 	group by deptno)#dptmxemplc
+
+8
+select deptno from emp where sal=(select max(sal) from emp)#dpthisal
+
+9
+select job,sum(sal+nvl(comm,0)) from emp group by job having sum(sal+NVL(comm,0))#jbgrphitosal
+s=(select max(sum(sal+NVL(comm,0)))from emp group by job)
+
+constr
+
+10
+Create table department(deptid number(3) primary key, deptname varchar(6) check(deptname in(‘CSE’,’EEE’,’BBA’), budget number(6) default 0)
+
+11
+Create table course(crs_id number(4) primary key, crs_name varchar2(20) not null, deptid number(3), foreign key(deptid) references department(deptid))
+
+12
+Create table  student(s_id number(11),s_name varchar2(20),phone number(11),address varchar2(50), email varchar2(30),credit_completed number(3), course_completed number(2),cgpa number(3),deptno number(5),gender varchar2(6))
+
+13
+alter table student add constraint sk primary key(s_id)
+
+14
+alter table student modify s_name varchar2(20) not null
+
+15
+alter table student add constraint uk unique(email)
+
+16
+alter table student add constraint sk1 foreign key(deptno) references department(deptid) 
+
+17
+alter table student add constraint sk2 check(gender='M' or gender='F')
+
+18
+alter table student disable constraint sk
+
+19
+alter table student drop constraint sk2
+
+20
+describe student
+
+21
+alter table student enable constraint sk
+   jQ
+
+22
+SELECT 	emp.empno, emp.ename, emp.deptno,
+  2		dept.deptno, dept.loc
+  3  FROM   	emp, dept
+  4  WHERE  	emp.deptno=dept.deptno;
+
+23
+SELECT emp.empno, emp.ename, emp.deptno,  
+  2	   dept.deptno, dept.loc
+  3  FROM   emp, dept
+  4  WHERE  emp.deptno=dept.deptno;
+
+24
+SELECT e.empno, e.ename, e.deptno,   
+  2         d.deptno, d.loc
+  3  FROM   emp e, dept d
+  4  WHERE  e.deptno=d.deptno;
+
+25
+SELECT 	e.ename, e.sal, s.grade
+   2	FROM	emp e, salgrade s
+   3	WHERE 	e.sal
+   4	BETWEEN 	s.losal AND s.hisal;
+
+26otj
+SELECT	table1.column, table2.column
+FROM	table1, table2
+WHERE	table1.column(+) = table2.column;
+
+27
+SELECT	table1.column, table2.column
+FROM	table1, table2
+WHERE	table1.column = table2.column(+);
+
+28
+ SELECT	e.ename, d.deptno, d.dname
+  2  FROM	emp e, dept d
+  3  WHERE	e.deptno(+) = d.deptno
+  4  ORDER BY	e.deptno;
+
+29jti
+SELECT worker.ename||' works for '||manager.ename
+  2  FROM 	emp worker, emp manager
+  3  WHERE 	worker.mgr = manager.empno;
+
+30 Loj
+Select ename,d.deptno,dnamefrom emp
+Left outer join dept d
+On (emp.deptno=d.deptno);
+
+31 roj
+Select ename,d.deptno,dname from dept d
+right outer join emp e
+On (e.deptno=d.deptno);
+
+32foj
+Select ename,d.deptno,dname from dept d
+full outer join emp e
+On (e.deptno=d.deptno);
